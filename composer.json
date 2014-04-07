@@ -1,0 +1,18 @@
+{
+    "name": "sobanvuex/li3_newrelic",
+    "description": "Lithium plugin for NewRelic",
+    "keywords": ["lithium", "li3", "newrelic", "monitoring"],
+    "type": "lithium-library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Soban",
+            "email": "me@soban.co",
+            "homepage": "https://soban.co"
+        }
+    ],
+    "require": {
+        "composer/installers": "*",
+        "sobanvuex/php-newrelic": "~1.0"
+    }
+}

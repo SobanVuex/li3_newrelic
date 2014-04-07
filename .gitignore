@@ -1,0 +1,5 @@
+/vendor/
+/libraries/
+composer.phar
+composer.lock
+ocular.phar

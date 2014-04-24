@@ -37,9 +37,9 @@ class NewRelic extends \lithium\core\StaticObject
      * @param  boolean|string $ransaction
      * @return \Closure
      */
-    public static function filter($ransaction = true)
+    public static function filter($transaction = true)
     {
-        return function($self, $params, $chain) use ($ransaction) {
+        return function($self, $params, $chain) use ($transaction) {
             $callable = $chain->next($self, $params, $chain);
 
             if ($transaction === 'url') {

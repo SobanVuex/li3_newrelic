@@ -21,7 +21,7 @@ class NewRelic extends \lithium\core\StaticObject
         );
 
         if ($options['filter']) {
-            Dispatcher::applyFilter('_callable', static::filter());
+            Dispatcher::applyFilter('_callable', static::filter($options['filter']));
         }
 
         if ($options['app_name']) {
@@ -34,23 +34,28 @@ class NewRelic extends \lithium\core\StaticObject
     }
 
     /**
+     * @param  boolean|string $ransaction
      * @return \Closure
      */
-    public static function filter()
+    public static function filter($ransaction = true)
     {
-        $filter = function($self, $params, $chain) {
+        return function($self, $params, $chain) use ($ransaction) {
             $callable = $chain->next($self, $params, $chain);
 
-            $name = get_class($callable);
-            $class = substr($name, strrpos($name, '\\') + 1);
-            $action = ucfirst($params['request']->params['action']);
-            $controller = ucfirst(preg_replace('/Controller$/', '', $class));
-            NewRelicAgent::getInstance()->nameTransaction($controller . '/' . $action);
+            if ($transaction === 'url') {
+                $transaction = $params['request']->url;
+            } elseif ($transaction) {
+                $name = get_class($callable);
+                $class = substr($name, strrpos($name, '\\') + 1);
+                $transaction = preg_replace('/Controller$/', '', $class) . '/' . $params['request']->params['action'];
+            } else {
+                return $callable;
+            }
+
+            NewRelicAgent::getInstance()->nameTransaction($transaction);
 
             return $callable;
         };
-
-        return $filter;
     }
 
 }

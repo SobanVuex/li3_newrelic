@@ -2,23 +2,25 @@
 
 namespace li3_newrelic\extensions;
 
-use lithium\action\Dispatcher;
-use NewRelic\NewRelic as NewRelicAgent;
+use \lithium\action\Dispatcher;
+use \NewRelic\NewRelic as NewRelicAgent;
 
-class NewRelic extends \lithium\core\StaticObject
+class NewRelic
 {
 
     /**
+     * Initialize the extension with provided conifugration
+     *
      * @param  array $options
      * @return void
      */
-    public static function init(array $options = array())
+    public static function init(array $options = [])
     {
-        $options += array(
+        $options += [
             'app_name' => defined('APP_NAME') ? APP_NAME : null,
             'license' => null,
             'filter' => true
-        );
+        ];
 
         if ($options['filter']) {
             Dispatcher::applyFilter('_callable', static::filter($options['filter']));
@@ -26,15 +28,17 @@ class NewRelic extends \lithium\core\StaticObject
 
         if ($options['app_name']) {
             if ($options['license']) {
-                NewRelicAgent::getInstance()->setAppname($options['app_name'], $options['license']);
+                NewRelicAgent::setAppname($options['app_name'], $options['license']);
             } else {
-                NewRelicAgent::getInstance()->setAppname($options['app_name']);
+                NewRelicAgent::setAppname($options['app_name']);
             }
         }
     }
 
     /**
-     * @param  boolean|string $ransaction
+     * Filter function for recording transaction name
+     *
+     * @param  boolean|string $transaction
      * @return \Closure
      */
     public static function filter($transaction = true)
@@ -52,7 +56,7 @@ class NewRelic extends \lithium\core\StaticObject
                 return $callable;
             }
 
-            NewRelicAgent::getInstance()->nameTransaction($transaction);
+            NewRelicAgent::nameTransaction($transaction);
 
             return $callable;
         };

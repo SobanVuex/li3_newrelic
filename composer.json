@@ -1,6 +1,6 @@
 {
     "name": "sobanvuex/li3_newrelic",
-    "description": "Lithium plugin for NewRelic",
+    "description": "Lithium plugin for New Relic",
     "keywords": ["lithium", "li3", "newrelic", "monitoring"],
     "type": "lithium-library",
     "license": "MIT",
@@ -12,7 +12,8 @@
         }
     ],
     "require": {
+        "php": ">=5.4.0",
         "composer/installers": "*",
-        "sobanvuex/php-newrelic": "~1.0"
+        "sobanvuex/php-newrelic": "1.*"
     }
 }
